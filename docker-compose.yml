@@ -12,9 +12,9 @@ services:
     hostname: claude-sandbox
     stdin_open: true
     tty: true
-    working_dir: /workspace/${PROJECT_NAME:-project}
+    working_dir: ${PROJECT_DIR:-.}
     volumes:
-      - ${PROJECT_DIR:-..}:/workspace/${PROJECT_NAME:-project}
+      - ${PROJECT_DIR:-.}:${PROJECT_DIR:-.}
       - ./volumes/home:/home/${SANDBOX_USER:-claude}
     environment:
       - TERM=xterm-256color

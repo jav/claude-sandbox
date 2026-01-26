@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Capture caller's directory before changing
+export PROJECT_DIR="${PROJECT_DIR:-$(pwd)}"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
@@ -12,4 +15,4 @@ if ! docker compose ps --status running | grep -q sandbox; then
     "$SCRIPT_DIR/up"
 fi
 
-exec docker compose exec sandbox bash
+exec docker compose exec --workdir "$PROJECT_DIR" sandbox bash
