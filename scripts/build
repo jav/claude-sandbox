@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+cd "$ROOT_DIR"
+
+# Check dependencies
+"$SCRIPT_DIR/check-deps" || exit 1
+
+# Run pre-build hooks
+for hook in "$SCRIPT_DIR"/hooks/pre-build*; do
+    [[ -x "$hook" ]] && "$hook"
+done
+
+# Check for local Dockerfile override
+if [[ -f "${PROJECT_DIR:-..}/Dockerfile.local" ]]; then
+    export DOCKERFILE="${PROJECT_DIR:-..}/Dockerfile.local"
+fi
+
+echo "Building claude-sandbox image..."
+docker compose build "$@"
+
+# Run post-build hooks
+for hook in "$SCRIPT_DIR"/hooks/post-build*; do
+    [[ -x "$hook" ]] && "$hook"
+done
+
+echo "Build complete."

@@ -1,0 +1,10 @@
+# Persistent volumes (keep structure, ignore contents)
+volumes/home/*
+!volumes/home/.gitkeep
+
+# Local overrides
+.env.local
+Dockerfile.local
+
+# Docker
+.docker/

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+
+cd "$ROOT_DIR"
+
+# Check if container is running
+if ! docker compose ps --status running | grep -q sandbox; then
+    echo "Container not running. Starting..."
+    "$SCRIPT_DIR/up"
+fi
+
+exec docker compose exec sandbox bash

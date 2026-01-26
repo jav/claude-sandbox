@@ -1,0 +1,32 @@
+# claude-sandbox configuration
+# Override these values in your parent repository
+
+# Container settings
+container:
+  name: claude-sandbox
+  hostname: claude-sandbox
+
+# User settings (should match host user for file permissions)
+user:
+  name: claude
+  uid: 1000
+  gid: 1000
+
+# Volume mounts
+volumes:
+  # Project directory mounted at /workspace
+  project:
+    source: ..
+    target: /workspace
+  # Persistent home directory
+  home:
+    source: ./volumes/home
+    target: /home/claude
+
+# Hooks to run at various lifecycle stages
+# Place executable scripts in scripts/hooks/
+hooks:
+  pre_build: []
+  post_build: []
+  pre_start: []
+  post_start: []

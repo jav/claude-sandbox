@@ -1,0 +1,21 @@
+services:
+  sandbox:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE:-Dockerfile}
+      args:
+        USERNAME: ${SANDBOX_USER:-claude}
+        USER_UID: ${SANDBOX_UID:-1000}
+        USER_GID: ${SANDBOX_GID:-1000}
+    image: claude-sandbox:latest
+    container_name: claude-sandbox
+    hostname: claude-sandbox
+    stdin_open: true
+    tty: true
+    working_dir: /workspace
+    volumes:
+      - ${PROJECT_DIR:-..}:/workspace
+      - ./volumes/home:/home/${SANDBOX_USER:-claude}
+    environment:
+      - TERM=xterm-256color
+    restart: unless-stopped
