@@ -10,13 +10,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
     git \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
-# Create non-root user
+# Create non-root user with passwordless sudo
 RUN groupadd --gid ${USER_GID} ${USERNAME} \
     && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
     && mkdir -p /workspace \
-    && chown ${USERNAME}:${USERNAME} /workspace
+    && chown ${USERNAME}:${USERNAME} /workspace \
+    && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
+    && chmod 0440 /etc/sudoers.d/${USERNAME}
 
 # Install Node.js and Claude Code
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
