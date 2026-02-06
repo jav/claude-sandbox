@@ -17,6 +17,39 @@ done
 echo "Starting claude-sandbox..."
 docker compose up -d "$@"
 
+# Sync Claude/AI config files from project root into container home.
+# This makes project-level configs discoverable at the user level inside
+# the container (e.g. ~/.claude/, ~/CLAUDE.md) so Claude Code picks them up
+# regardless of working directory.
+sync_claude_config() {
+    local user="${SANDBOX_USER:-claude}"
+    local home="/home/${user}"
+    local found=0
+
+    # Directories to link
+    for dir in .claude .ai; do
+        if [[ -d "${PROJECT_DIR}/${dir}" ]]; then
+            docker compose exec -T sandbox \
+                sh -c "rm -f '${home}/${dir}' 2>/dev/null; ln -sfn '${PROJECT_DIR}/${dir}' '${home}/${dir}'" \
+                && found=1 && echo "  Linked ${dir}/"
+        fi
+    done
+
+    # Files to link
+    for file in CLAUDE.md CLAUDE.local.md .mcp.json; do
+        if [[ -f "${PROJECT_DIR}/${file}" ]]; then
+            docker compose exec -T sandbox \
+                ln -sfn "${PROJECT_DIR}/${file}" "${home}/${file}" \
+                && found=1 && echo "  Linked ${file}"
+        fi
+    done
+
+    [[ $found -eq 1 ]] || echo "  No config files found in project root."
+}
+
+echo "Syncing Claude/AI config files..."
+sync_claude_config
+
 # Run post-start hooks
 for hook in "$SCRIPT_DIR"/hooks/post-start*; do
     [[ -x "$hook" ]] && "$hook"
