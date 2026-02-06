@@ -25,7 +25,7 @@ RUN groupadd --gid ${USER_GID} ${USERNAME} \
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/* \
-    && npm install -g @anthropic-ai/claude-code
+    && npm install -g @anthropic-ai/claude-code@latest
 
 # Set up home directory
 WORKDIR /home/${USERNAME}
