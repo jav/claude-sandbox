@@ -8,13 +8,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$ROOT_DIR"
+source "$SCRIPT_DIR/common.sh"
 
 # Run pre-start hooks
 for hook in "$SCRIPT_DIR"/hooks/pre-start*; do
     [[ -x "$hook" ]] && "$hook"
 done
 
-echo "Starting claude-sandbox..."
+echo "Starting $SANDBOX_NAME..."
 docker compose up -d "$@"
 
 # Sync Claude/AI config files from project root into container home.

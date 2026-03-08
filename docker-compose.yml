@@ -7,9 +7,9 @@ services:
         USERNAME: ${SANDBOX_USER:-claude}
         USER_UID: ${SANDBOX_UID:-1000}
         USER_GID: ${SANDBOX_GID:-1000}
-    image: claude-sandbox:latest
-    container_name: claude-sandbox
-    hostname: claude-sandbox
+    image: ${SANDBOX_NAME:-claude-sandbox}:latest
+    container_name: ${SANDBOX_NAME:-claude-sandbox}
+    hostname: ${SANDBOX_NAME:-claude-sandbox}
     stdin_open: true
     tty: true
     working_dir: ${PROJECT_DIR:-.}

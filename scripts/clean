@@ -5,12 +5,13 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$ROOT_DIR"
+source "$SCRIPT_DIR/common.sh"
 
-echo "Stopping and removing container..."
+echo "Stopping and removing container ($SANDBOX_NAME)..."
 docker compose down --rmi local -v 2>/dev/null || true
 
-echo "Removing claude-sandbox image..."
-docker rmi claude-sandbox:latest 2>/dev/null || true
+echo "Removing $SANDBOX_NAME image..."
+docker rmi "$SANDBOX_NAME:latest" 2>/dev/null || true
 
 echo "Clean complete."
 echo "Note: Persistent home directory (volumes/home/) preserved. Remove manually if needed."

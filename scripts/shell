@@ -8,6 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$ROOT_DIR"
+source "$SCRIPT_DIR/common.sh"
 
 # Check if container is running
 if ! docker compose ps --status running | grep -q sandbox; then

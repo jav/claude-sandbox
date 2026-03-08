@@ -1,10 +1,11 @@
 # claude-sandbox configuration
 # Override these values in your parent repository
 
-# Container settings
+# Container settings (names are auto-derived from parent project directory)
+# e.g., parent dir "my-app" → container name "claude-sandbox-my-app"
 container:
-  name: claude-sandbox
-  hostname: claude-sandbox
+  name: claude-sandbox-${project}
+  hostname: claude-sandbox-${project}
 
 # User settings (should match host user for file permissions)
 user:

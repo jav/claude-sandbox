@@ -5,10 +5,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$ROOT_DIR"
+source "$SCRIPT_DIR/common.sh"
 
-echo "=== Container Status ==="
+echo "=== Container Status ($SANDBOX_NAME) ==="
 docker compose ps
 
 echo ""
 echo "=== Image Info ==="
-docker images claude-sandbox:latest --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}" 2>/dev/null || echo "Image not built yet."
+docker images "$SANDBOX_NAME:latest" --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}\t{{.CreatedAt}}" 2>/dev/null || echo "Image not built yet."

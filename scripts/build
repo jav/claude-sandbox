@@ -5,6 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$ROOT_DIR"
+source "$SCRIPT_DIR/common.sh"
 
 # Check dependencies
 "$SCRIPT_DIR/check-deps" || exit 1
@@ -19,7 +20,7 @@ if [[ -f "${PROJECT_DIR:-..}/Dockerfile.local" ]]; then
     export DOCKERFILE="${PROJECT_DIR:-..}/Dockerfile.local"
 fi
 
-echo "Building claude-sandbox image..."
+echo "Building $SANDBOX_NAME image..."
 docker compose build "$@"
 
 # Run post-build hooks
